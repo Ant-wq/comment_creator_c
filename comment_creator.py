@@ -161,21 +161,36 @@ def selectLicense():
 
 def getAuthorAndYear():
 
+	got_name = False
+	got_year = False
+
 	exitStatus = False
 	author = str()
-	date = str()
+	year = str()
 
 	while exitStatus == False:
-		print("Author's name:")
-		author = input("> ")
+		if got_name == False:
+			print("Author's name:")
+			author = input("> ")
 	
-		if(len(author)>76):
-			print("\nToo long name!\n")
-			continue
+			if(len(author)>64):
+				print("\nToo long name!\n")
+				continue
+			got_name = True
 
-		print("Enter Year:")
-		year = input("> ")
+		if got_year == False:
+			print("Enter Year:")
+			year = input("> ")
+			
+			if len(year)!=4:
+				print("year should be in YYYY")
+				continue
+			got_year = True
+
 		exitStatus = True
+	
+	return author, year
+
 def setStructure():
 	
 	exitStatus = False
@@ -202,9 +217,26 @@ def printCommentsWithLicense(license_to_print):
 		print(" "+"*"*78+"/")
 		print("\n\n\n")
 
-# def printCommentsWithoutLicense():
+def printCommentsWithoutLicense(author, date):
+	print("Comments:\n")
+	print("/"+"*"*78)
+	print(" *  Author: "+author+" "*(66-len(author))+"*")
+	print(" *"+" "*76+"*")
+	print(" *  Year: "+date+" "*64+"*")
+	print(" "+"*"*78+"/")
+	print("\n\n\n")
+	
+	for j in chapters:
+		print("/"+"*"*78)
+		print(" *  "+j+" "*(74-len(j))+"*")	
+		print(" "+"*"*78+"/")
+		print("\n\n\n")
+
 	
 def main():
+
+	author = str()
+	year = str()
 
 	printBanner()
 	
@@ -213,7 +245,9 @@ def main():
 		setStructure()
 		printCommentsWithLicense(licensesDict[selected_license])
 	else:
-		getAuthorAndYear()
+		author, year = getAuthorAndYear()
+		setStructure()
+		printCommentsWithoutLicense(author, year)
 	
 	return 0
 

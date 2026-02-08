@@ -180,8 +180,14 @@ def getAuthorAndYear():
 
 		if got_year == False:
 			print("Enter Year:")
-			year = input("> ")
-			
+			try:
+				year_tmp = int(input("> "))
+			except:
+				print("\nYear must be a number in YYYY format\n")
+				continue
+
+			year = str(year_tmp)
+
 			if len(year)!=4:
 				print("year should be in YYYY")
 				continue
